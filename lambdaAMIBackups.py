@@ -1,6 +1,6 @@
 # Automated AMI Backups
 #
-# @author Robert Kozora <robert.kozora@wheaton.com>
+# @author Robert Kozora <bobby@kozora.me>
 #
 # This script will search for all instances having a tag with "Backup" or "backup"
 # on it. As soon as we have the instances list, we loop through each instance
@@ -14,8 +14,11 @@
 import boto3
 import collections
 import datetime
+import sys
+import pprint
 
 ec = boto3.client('ec2')
+#image = ec.Image('id')
 
 def lambda_handler(event, context):
     
@@ -44,8 +47,7 @@ def lambda_handler(event, context):
                 if t['Key'] == 'Retention'][0]
         except IndexError:
             retention_days = 7
-            
-        # Loop through instance's EBS volumes
+
         #for dev in instance['BlockDeviceMappings']:
         #    if dev.get('Ebs', None) is None:
         #        continue
@@ -60,22 +62,34 @@ def lambda_handler(event, context):
             #create_image(instance_id, name, description=None, no_reboot=False, block_device_mapping=None, dry_run=False)
             # DryRun, InstanceId, Name, Description, NoReboot, BlockDeviceMappings
             create_time = datetime.datetime.now()
-            create_fmt = create_time.strftime('%Y-%m-%d.%H.%M.%S')
+            create_fmt = create_time.strftime('%Y-%m-%d')
         
-            AMIid = ec.create_image(InstanceId=instance['InstanceId'], Name="Lambda - " + instance['InstanceId'] + " From " + create_fmt, Description="Lambda created AMI of instance " + instance['InstanceId'], NoReboot=True, DryRun=False)
-            to_tag[retention_days].append(AMIid['ImageId'])
+            AMIid = ec.create_image(InstanceId=instance['InstanceId'], Name="Lambda - " + instance['InstanceId'] + " from " + create_fmt, Description="Lambda created AMI of instance " + instance['InstanceId'] + " from " + create_fmt, NoReboot=True, DryRun=False)
 
+            
+            pprint.pprint(instance)
+            #sys.exit()
+            #break
+        
+            #to_tag[retention_days].append(AMIid)
+            
+            to_tag[retention_days].append(AMIid['ImageId'])
+            
             print "Retaining AMI %s of instance %s for %d days" % (
                 AMIid['ImageId'],
                 instance['InstanceId'],
                 retention_days,
             )
 
+    print to_tag.keys()
+    
     for retention_days in to_tag.keys():
         delete_date = datetime.date.today() + datetime.timedelta(days=retention_days)
         delete_fmt = delete_date.strftime('%m-%d-%Y')
         print "Will delete %d AMIs on %s" % (len(to_tag[retention_days]), delete_fmt)
-
+        
+        #break
+    
         ec.create_tags(
             Resources=to_tag[retention_days],
             Tags=[
