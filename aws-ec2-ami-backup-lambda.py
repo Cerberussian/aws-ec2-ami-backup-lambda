@@ -21,7 +21,6 @@ import os
 default_retention = int(os.environ['DEFAULT_RETENTION'])
 
 ec = boto3.client('ec2')
-#image = ec.Image('id')
 
 def lambda_handler(event, context):
 
@@ -54,35 +53,30 @@ def lambda_handler(event, context):
             if t['Key'] == 'Retention':
                 retention_days[AMIid['ImageId']]=int(t.get('Value'))
             if t['Key'] == 'Name':
-            	instance_name[AMIid['ImageId']] = t.get('Value')
+                instance_name[AMIid['ImageId']] = t.get('Value')
 
         try:
             retention_days[AMIid['ImageId']]
         except:
             retention_days[AMIid['ImageId']] = default_retention
-            print "setting default retention priod"
+            print "setting default retention priod for %s" % AMIid['ImageId']
 
         #pprint.pprint(instance)
                 
-        print retention_days
-        
-        print "Retaining AMI %s of instance %s for %d days" % (
+        print "Retaining image %s of instance %s for %d days" % (
             AMIid['ImageId'],
             instance['InstanceId'],
             retention_days[AMIid['ImageId']]
         )
-
-    print "Retention days: \n"
-    print retention_days
     
     for id in retention_days:
         delete_date = datetime.date.today() + datetime.timedelta(days=retention_days[id])
         delete_fmt = delete_date.strftime('%m-%d-%Y')
         
+        print "Will delete image of %s on %s" % (instance_name[id], delete_fmt)
+        
         # Resources does not accept strings
         listed_id = [id]
-        
-        print "Will delete %d AMIs on %s" % (len(retention_days), delete_fmt)
         
         ec.create_tags(
             Resources=listed_id,
