@@ -2,6 +2,7 @@
 > Original code: https://gist.github.com/bkozora/724e01903a9ad481d21e <br/>
 > @author Robert Kozora <bobby@kozora.me>
 <br/>
+
 **Hello!**
 
 This python code is to be used with scheduling (cloudwatch events) to take images of all instanced with backup tag.
@@ -19,8 +20,8 @@ You decide if its hourly / daily / weekly / monthly.
 >
 > After creating the AMI it creates a "DeleteOn" tag on the AMI indicating when
 > it will be deleted using the Retention value and another Lambda function 
-
 <br/>
+
 **Changes compared to original code:**
 
 * Removed to_tag and replaced it with retention_days list
