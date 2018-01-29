@@ -1,7 +1,7 @@
-# aws-ec2-ami-backup-lambda
+> aws-ec2-ami-backup-lambda
 
-# Original code: https://gist.github.com/bkozora/724e01903a9ad481d21e
-# @author Robert Kozora <bobby@kozora.me> (as mentioned in code)
+> Original code: https://gist.github.com/bkozora/724e01903a9ad481d21e
+> @author Robert Kozora <bobby@kozora.me> (as mentioned in code)
 
 Hello!
 
@@ -11,14 +11,14 @@ You decide if its hourly / daily / weekly / monthly.
 
 Here is author's original code comment:
 
-# This script will search for all instances having a tag with "Backup" or "backup"
-# on it. As soon as we have the instances list, we loop through each instance
-# and create an AMI of it. Also, it will look for a "Retention" tag key which
-# will be used as a retention policy number in days. If there is no tag with
-# that name, it will use a 7 days default value for each AMI.
-#
-# After creating the AMI it creates a "DeleteOn" tag on the AMI indicating when
-# it will be deleted using the Retention value and another Lambda function 
+> This script will search for all instances having a tag with "Backup" or "backup"
+> on it. As soon as we have the instances list, we loop through each instance
+> and create an AMI of it. Also, it will look for a "Retention" tag key which
+> will be used as a retention policy number in days. If there is no tag with
+> that name, it will use a 7 days default value for each AMI.
+>
+> After creating the AMI it creates a "DeleteOn" tag on the AMI indicating when
+> it will be deleted using the Retention value and another Lambda function 
 
 I've modified the original code and cleaned it up a bit.
 
