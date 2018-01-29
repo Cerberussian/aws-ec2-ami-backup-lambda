@@ -1,7 +1,7 @@
 > aws-ec2-ami-backup-lambda
 
 > Original code: https://gist.github.com/bkozora/724e01903a9ad481d21e
-> @author Robert Kozora <bobby@kozora.me> (as mentioned in code)
+> @author Robert Kozora <bobby@kozora.me>
 
 Hello!
 
