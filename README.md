@@ -2,14 +2,14 @@
 > Original code: https://gist.github.com/bkozora/724e01903a9ad481d21e <br/>
 > @author Robert Kozora <bobby@kozora.me>
 <br/>
-** Hello! **
+**Hello!**
 
 This python code is to be used with scheduling (cloudwatch events) to take images of all instanced with backup tag.
 
 You decide if its hourly / daily / weekly / monthly.
 
 
-** Here is author's original code comment: **
+**Here is author's original code comment:**
 
 > This script will search for all instances having a tag with "Backup" or "backup"
 > on it. As soon as we have the instances list, we loop through each instance
@@ -21,7 +21,7 @@ You decide if its hourly / daily / weekly / monthly.
 > it will be deleted using the Retention value and another Lambda function 
 
 <br/>
-** Changes compared to original code: **
+**Changes compared to original code:**
 
 * Removed to_tag and replaced it with retention_days list
 * Moved tag iteration logic to main
