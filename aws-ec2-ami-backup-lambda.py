@@ -1,7 +1,5 @@
 # Automated AMI Backups
 #
-# @author Robert Kozora <bobby@kozora.me>
-#
 # This script will search for all instances having a tag with "Backup" or "backup"
 # on it. As soon as we have the instances list, we loop through each instance
 # and create an AMI of it. Also, it will look for a "Retention" tag key which
@@ -45,9 +43,15 @@ def lambda_handler(event, context):
     
     for instance in instances:
         create_time = datetime.datetime.now()
-        create_fmt = create_time.strftime('%Y-%m-%d-%H%M%S')
+        create_fmt = create_time.strftime('%H%M%S-%Y-%m-%d')
     
-        AMIid = ec.create_image(InstanceId=instance['InstanceId'], Name="Daily - " + instance['InstanceId'] + " from " + create_fmt, Description="Lambda created AMI of instance " + instance['InstanceId'] + " from " + create_fmt, NoReboot=True, DryRun=False)
+        AMIid = ec.create_image(
+            InstanceId=instance['InstanceId'], 
+            Name="Lambda - " + instance['InstanceId'] + " from " + create_fmt, 
+            Description="Lambda created AMI of instance " + instance['InstanceId'] + " from " + create_fmt, 
+            NoReboot=True, 
+            DryRun=False
+            )
         
         for t in instance['Tags']:
             if t['Key'] == 'Retention':
