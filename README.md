@@ -32,5 +32,6 @@ You decide if its hourly / daily / weekly / monthly.
 * Images now got name tag of instances they are images of (in addition to deletion date)
 
 
-The work on lambda to actually remove the images according to DeleteOn tag 
-is work in progress and based on Robert Kozora's code too.
+Lambda to actually remove the images according to DeleteOn tag:
+
+https://github.com/Cerberussian/aws-ec2-ami-cleanup-lambda
